@@ -63,7 +63,31 @@ window.__ModuleLoader__.load({
 				// config to disable it — hide it. Scoped under .memoir-panel
 				// (memoir page only) with higher specificity than memoir's
 				// own single-class rules.
-				".memoir-panel .memoir-inspector,.memoir-panel .memoir-diagnostics{display:none}"
+				".memoir-panel .memoir-inspector,.memoir-panel .memoir-diagnostics{display:none}",
+				// --- dsh-memoir boot-race repair ---
+				// The dsh service sometimes boots with a stale PARTIAL memoir
+				// stylesheet (style[data-plugin="dsh-memoir"] ~600B with no
+				// view rules). memoir's injectStyles() only checks tag
+				// presence, so the full panel CSS never lands and the panel
+				// mounts as an always-visible static block squeezed at the
+				// column bottom-left. Re-assert the layout here (harmless
+				// duplicates when memoir's own CSS is intact).
+				"[data-dsh-memoir-view]{display:none !important}",
+				"html[data-dsh-memoir-active] [data-dsh-memoir-view]{display:flex !important;flex-direction:column !important;position:absolute !important;inset:0 !important;z-index:20 !important;background:var(--bg-panel,#ffffff) !important;color:var(--text-primary,#1f2328) !important;font-size:13px !important}",
+				"html[data-dsh-memoir-active] [class*=\"centerCol\"] > *:not([data-dsh-memoir-view]){display:none !important}",
+				// panel skeleton, used when memoir's own CSS is missing
+				"html[data-dsh-memoir-active] .memoir-panel{display:flex;flex-direction:column;height:100%;overflow:hidden}",
+				"html[data-dsh-memoir-active] .memoir-header{display:flex;align-items:center;gap:8px;padding:12px 14px 8px}",
+				"html[data-dsh-memoir-active] .memoir-title{font-size:15px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+				"html[data-dsh-memoir-active] .memoir-subtitle{font-size:11px;opacity:.65;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+				"html[data-dsh-memoir-active] .memoir-iconbtn{border:1px solid transparent;background:transparent;color:inherit;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:4px}",
+				"html[data-dsh-memoir-active] .memoir-tabs{display:flex;gap:4px;padding:0 14px;border-bottom:1px solid var(--border,rgba(0,0,0,.1))}",
+				"html[data-dsh-memoir-active] .memoir-tab{border:none;background:transparent;color:inherit;padding:7px 12px;cursor:pointer;font-size:13px;border-bottom:2px solid transparent;opacity:.75}",
+				"html[data-dsh-memoir-active] .memoir-toolbar{display:flex;gap:8px;padding:8px 14px}",
+				"html[data-dsh-memoir-active] .memoir-search{flex:1;border:1px solid var(--border,rgba(0,0,0,.15));background:transparent;color:inherit;border-radius:6px;padding:6px 10px;font-size:13px;outline:none}",
+				"html[data-dsh-memoir-active] .memoir-primary{border:1px solid transparent;background:var(--accent,#3b82f6);color:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px}",
+				"html[data-dsh-memoir-active] .memoir-body{flex:1;overflow-y:auto;padding:4px 14px 16px}",
+				"html[data-dsh-memoir-active] .memoir-empty{padding:24px 14px;opacity:.75}"
 			].join("\n");
 			document.head.appendChild(style);
 		}

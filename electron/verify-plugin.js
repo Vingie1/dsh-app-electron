@@ -88,6 +88,27 @@ async function run() {
     return getComputedStyle(strip).display === 'none' ? 'hidden' : 'VISIBLE';
   })()`))
 
+  // ---- memoir boot-race repair (stale partial CSS) ----
+  // Simulate the broken boot: drop memoir's own stylesheet, then open the
+  // panel. The repair rules in our stylesheet must still lay the panel out
+  // as a full-page overlay and hide the center-column content, and hide
+  // the view again once the panel closes.
+  log('memoir repair: ' + await js(win, `(() => {
+    const view = document.querySelector('[data-dsh-memoir-view]');
+    if (view === null) return 'no-memoir (skip)';
+    document.querySelectorAll('style[data-plugin="dsh-memoir"]').forEach((s) => s.remove());
+    const doc = document.documentElement;
+    doc.setAttribute('data-dsh-memoir-active', '');
+    const vcs = getComputedStyle(view);
+    const childrenHidden = [...document.querySelectorAll('[class*="centerCol"] > *:not([data-dsh-memoir-view])')]
+      .every((c) => getComputedStyle(c).display === 'none');
+    const ok = vcs.position === 'absolute' && vcs.display === 'flex' &&
+      view.getBoundingClientRect().width > 1000;
+    doc.removeAttribute('data-dsh-memoir-active');
+    const closed = getComputedStyle(view).display === 'none';
+    return (ok ? 'panel-ok' : 'PANEL-BROKEN') + '/' + (childrenHidden ? 'children-hidden' : 'children-VISIBLE') + '/' + (closed ? 'closed-hidden' : 'closed-VISIBLE');
+  })()`))
+
   // ---- open via corner button ----
   const boundsBefore = win.getBounds()
   await js(win, `document.querySelector('[data-dsh-chat-corner]').click()`)
