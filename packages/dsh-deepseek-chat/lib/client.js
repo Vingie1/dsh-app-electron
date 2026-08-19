@@ -47,11 +47,11 @@ window.__ModuleLoader__.load({
 				// Transparent at rest so only the blue whale floats on the
 				// window background (no grey ring); a soft fill appears on
 				// hover as feedback. Open/closed is not color-coded.
-				// top:56px keeps it below the shell's own top-right control
-				// row (Session log toggle etc.), which sits at ~10-45px.
-				".dshc-corner{position:fixed;top:56px;right:30px;z-index:39;width:28px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;display:grid;place-items:center;padding:0;opacity:1;transition:background .12s ease}",
+				// The shell's own Session log capsule is hidden (see below),
+				// so the whale sits back at the very top-right corner.
+				".dshc-corner{position:fixed;top:14px;right:30px;z-index:39;width:32px;height:32px;border:0;border-radius:999px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;display:grid;place-items:center;padding:0;opacity:1;transition:background .12s ease}",
 				".dshc-corner:hover{background:var(--dsw-alias-interactive-bg-hover)}",
-				".dshc-corner svg{width:16px;height:16px}",
+				".dshc-corner svg{width:20px;height:20px}",
 				// Full-page plugin panels (dsh-memoir memory page, dsh-ssh,
 				// dsh-taskboard) replace the center column and own the
 				// top-right corner; the convention is html[data-<panel>-active]
@@ -89,7 +89,11 @@ window.__ModuleLoader__.load({
 				"html[data-dsh-memoir-active] .memoir-search{flex:1;border:1px solid var(--border,rgba(0,0,0,.15));background:transparent;color:inherit;border-radius:6px;padding:6px 10px;font-size:13px;outline:none}",
 				"html[data-dsh-memoir-active] .memoir-primary{border:1px solid transparent;background:var(--accent,#3b82f6);color:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px}",
 				"html[data-dsh-memoir-active] .memoir-body{flex:1;overflow-y:auto;padding:4px 14px 16px}",
-				"html[data-dsh-memoir-active] .memoir-empty{padding:24px 14px;opacity:.75}"
+				"html[data-dsh-memoir-active] .memoir-empty{padding:24px 14px;opacity:.75}",
+				// Hide the official @deepseek-ai/dsh-session-log-export header
+				// capsule ("Session log" pill) — user preference; the session
+				// export itself stays reachable via the /export command.
+				"[class*=\"sessionLogButton\"]{display:none !important}"
 			].join("\n");
 			document.head.appendChild(style);
 		}
