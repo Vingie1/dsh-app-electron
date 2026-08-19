@@ -1,0 +1,15 @@
+packages:
+  - packages/*
+
+# Peer modules (cordis, schemastery, ...) are deliberately NOT auto-installed:
+# the workspace root's node_modules/@deepseek-ai is a junction to the dsh app
+# installation (app/node_modules/@deepseek-ai), so every @deepseek-ai module —
+# in both the desktop tree and the web tree — resolves to the same physical
+# instance. That single-instance identity is load-bearing for Cordis symbols
+# (Service.init) shared across the bridge.
+autoInstallPeers: false
+
+# Electron ships a postinstall that downloads its dist binary.
+pnpm:
+  onlyBuiltDependencies:
+    - electron

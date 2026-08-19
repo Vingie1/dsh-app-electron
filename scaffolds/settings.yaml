@@ -1,0 +1,11 @@
+# Scaffolded DSH settings (credential-free: keys are env-var NAMES only).
+ui-onboarding:
+  welcomeNoticeVersion: 2026-08-13.1
+llm-pi-ai:
+  providers:
+    opencode-go:
+      apiKeyEnv: OPENCODE_GO_API_KEY
+agent-default-model:
+  provider: opencode-go
+  model: deepseek-v4-flash
+  reasoningEffort: off

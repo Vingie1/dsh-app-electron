@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# local secrets / credentials (never commit)
+.mcp.json
+**/.mcp.json
+
+# runtime artifacts
+*.log
+app.log
+electron.log
+electron/window-state.json
+assets/verify-out/
+assets/spike-out/
+gcm-diagnose.log
+
+# session data (per-machine)
+sessions/
+
+# OS
+.DS_Store
+Thumbs.db

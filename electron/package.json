@@ -1,0 +1,13 @@
+{
+  "name": "dsh-electron-shell",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DeepSeek Harness Electron desktop shell",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "43.4.0"
+  }
+}

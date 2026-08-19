@@ -1,0 +1,24 @@
+{
+  "name": "dsh-desktop-bridge",
+  "version": "0.1.0",
+  "description": "The two-sided desktop bridge: a host plugin that runs inside the DSH web tree (WS client to the desktop bridge server, hello handshake, ctx.desktop service) plus the client bundle that provides the browser-side desktop service (P1).",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "dsh-desktop-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "license": "MIT"
+}

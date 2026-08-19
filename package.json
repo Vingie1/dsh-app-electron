@@ -1,0 +1,13 @@
+{
+  "name": "dsh-desktop-app-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DeepSeek Harness desktop app — Everything-is-a-Plugin extends to the desktop layer",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "pnpm --filter dsh-desktop-app start",
+    "dev": "pnpm --filter dsh-desktop-app start"
+  }
+}

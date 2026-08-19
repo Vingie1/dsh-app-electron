@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-app-boot": "0.1.0-rc.7",
+    "dsh-desktop-core": "file:../packages/dsh-desktop-core"
+  },
+  "_npx": {
+    "packages": [
+      "@deepseek-ai/dsh"
+    ]
+  }
+}

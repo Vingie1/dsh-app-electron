@@ -1,0 +1,6 @@
+# dsh-deepseek-chat bundle patch: inserts the plugin row into the profile
+# roster. The host half is a no-op; the browser half renders the sidebar
+# entry and the chat panel (see lib/client.js).
+- insert:
+    - id: dsh-deepseek-chat
+      name: 'dsh-deepseek-chat'

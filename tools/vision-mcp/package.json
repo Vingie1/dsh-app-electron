@@ -1,0 +1,16 @@
+{
+  "name": "vision-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude Code 视觉 MCP 工具：主模型（DeepSeek）为纯文本，本工具把图片转发给 OpenAI 兼容的视觉 API（默认智谱 GLM-4V-Flash）并返回文字描述",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/smoke.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.24.0"
+  }
+}

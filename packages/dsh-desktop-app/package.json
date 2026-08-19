@@ -1,0 +1,17 @@
+{
+  "name": "dsh-desktop-app",
+  "version": "0.1.0",
+  "description": "The DeepSeek Harness desktop app entry: boots the desktop Cordis tree in the Electron main process, supervises the DSH web child, and hosts the native window.",
+  "private": true,
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "set ELECTRON_RUN_AS_NODE=&& electron ."
+  },
+  "dependencies": {
+    "dsh-desktop-core": "workspace:*",
+    "dsh-desktop-bridge": "workspace:*",
+    "electron": "43.4.0"
+  },
+  "license": "MIT"
+}

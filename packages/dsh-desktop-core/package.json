@@ -1,0 +1,41 @@
+{
+  "name": "dsh-desktop-core",
+  "version": "0.1.0",
+  "description": "The dsh-desktop profile bundle: the minimal row set for the desktop tree (timer/hmr) plus the desktop services — supervisor (DSH child-process orchestration + bridge server) and window (BrowserWindow lifecycle). The only package allowed to touch Electron.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./supervisor": {
+      "default": "./lib/supervisor.js"
+    },
+    "./window": {
+      "default": "./lib/window.js"
+    },
+    "./protocol": {
+      "default": "./lib/protocol.js"
+    },
+    "./ws-server": {
+      "default": "./lib/ws-server.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-home-paths": "^0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "license": "MIT"
+}

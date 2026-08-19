@@ -1,0 +1,40 @@
+{
+  "name": "dsh-deepseek-chat",
+  "version": "0.1.0",
+  "description": "DeepSeek 快问: a top-right corner button that opens a frameless side window docked to the main window, embedding chat.deepseek.com (login + chat) via an Electron webview. The only browser function; everything else is locked down.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vingie1/dsh-deepseek-chat.git"
+  },
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "cordis.patch.yml",
+    "lib",
+    "electron",
+    "install.js",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.19"
+  },
+  "bin": {
+    "dsh-deepseek-chat-install": "./install.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  }
+}

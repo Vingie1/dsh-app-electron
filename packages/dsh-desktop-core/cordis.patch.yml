@@ -1,0 +1,51 @@
+# The dsh-desktop-core bundle patch: the desktop tree's first patch layer,
+# applied over the empty profile root (like dsh-base for the web tree, but
+# deliberately WITHOUT dsh-base: sessions/credentials/agents stay in the web
+# child process, never in the Electron main).
+#
+# The desktop tree is the second, isomorphic Cordis host the shell runs.
+# Every row below can be disabled/overridden by the profile's own
+# cordis.patch.yml, the home-level cordis.patch.yml, or a --patch overlay —
+# the same patch dialect web plugins use. There is no second plugin philosophy.
+#
+# Row order carries no load semantics (activation is service-availability
+# driven); the grouping is for readers.
+
+- insert:
+    # Minimal shared rows: timer only. HMR is disabled here on purpose — its
+    # service requires Node's --expose-internals, which Electron's main
+    # process cannot turn on (NODE_OPTIONS is blocklisted for it). Because
+    # dsh-app-boot's watchUserPatches attaches to the HMR service, the
+    # desktop app skips that watcher when the row is disabled; user patches
+    # then apply on the next app start. Enabling this row from a user patch
+    # layer restores hot reload, at the cost of requiring an Electron main
+    # that can pass --expose-internals.
+    # Everything else the web tree carries (llm, sessions, agent, jobs,
+    # credentials, ...) lives in the DSH child process on purpose.
+    - id: timer
+      name: '@deepseek-ai/cordis-plugin-timer'
+
+    - id: hmr
+      name: '@deepseek-ai/cordis-plugin-hmr'
+      disabled: true
+
+    # The DSH child-process supervisor: bridge server, token, bridge.yml
+    # overlay, ELECTRON_RUN_AS_NODE spawn, hello handshake, crash respawn,
+    # shutdown cleanup. Emits 'desktop/bridge-ready' with the real web port.
+    - id: desktop-supervisor
+      name: 'dsh-desktop-core/supervisor'
+      config:
+        helloTimeoutMs: 45000
+        respawnDelayMs: 3000
+
+    # The native window: created when the supervisor reports the DSH web
+    # server is up. Disable this row to run the desktop tree headless —
+    # the supervisor keeps running on its own.
+    - id: desktop-window
+      name: 'dsh-desktop-core/window'
+      config:
+        title: 'DeepSeek Harness'
+        minWidth: 900
+        minHeight: 600
+        backgroundColor: '#ffffff'
+        autoHideMenuBar: true
