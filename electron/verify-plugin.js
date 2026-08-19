@@ -64,6 +64,21 @@ async function run() {
   log('corner count: ' + await js(win, `document.querySelectorAll('[data-dsh-chat-corner]').length`))
   log('sidebar entry gone: ' + await js(win, `!document.querySelector('[data-dsh-chat-entry]')`))
 
+  // ---- full-page plugin panels must not collide with the corner button ----
+  // The panel convention is html[data-<panel>-active] while open (memoir,
+  // ssh, taskboard). Toggle the attribute in the live page and assert the
+  // whale hides under it and comes back after it is removed.
+  log('corner under memoir panel: ' + await js(win, `(() => {
+    const btn = document.querySelector('[data-dsh-chat-corner]');
+    if (btn === null) return 'no-btn';
+    const doc = document.documentElement;
+    doc.setAttribute('data-dsh-memoir-active', '');
+    const hidden = getComputedStyle(btn).display === 'none';
+    doc.removeAttribute('data-dsh-memoir-active');
+    const restored = getComputedStyle(btn).display !== 'none';
+    return (hidden ? 'hidden' : 'VISIBLE-OVER-PANEL') + '/' + (restored ? 'restored' : 'GONE-AFTER-CLOSE');
+  })()`))
+
   // ---- open via corner button ----
   const boundsBefore = win.getBounds()
   await js(win, `document.querySelector('[data-dsh-chat-corner]').click()`)

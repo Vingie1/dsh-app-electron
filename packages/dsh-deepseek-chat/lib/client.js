@@ -49,7 +49,15 @@ window.__ModuleLoader__.load({
 				// hover as feedback. Open/closed is not color-coded.
 				".dshc-corner{position:fixed;top:14px;right:30px;z-index:39;width:28px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;display:grid;place-items:center;padding:0;opacity:1;transition:background .12s ease}",
 				".dshc-corner:hover{background:var(--dsw-alias-interactive-bg-hover)}",
-				".dshc-corner svg{width:16px;height:16px}"
+				".dshc-corner svg{width:16px;height:16px}",
+				// Full-page plugin panels (dsh-memoir memory page, dsh-ssh,
+				// dsh-taskboard) replace the center column and own the
+				// top-right corner; the convention is html[data-<panel>-active]
+				// while open. Hide under them so the whale never overlaps a
+				// panel's own controls (e.g. memoir's close button).
+				"html[data-dsh-memoir-active] .dshc-corner,",
+				"html[data-dsh-ssh-active] .dshc-corner,",
+				"html[data-dsh-taskboard-active] .dshc-corner{display:none}"
 			].join("\n");
 			document.head.appendChild(style);
 		}
