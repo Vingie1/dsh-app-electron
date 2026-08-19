@@ -61,6 +61,19 @@ async function run() {
   }
   log('corner present: ' + await js(win, `!!document.querySelector('[data-dsh-chat-corner]')`))
   log('corner rect: ' + await js(win, `(()=>{const r=document.querySelector('[data-dsh-chat-corner]')?.getBoundingClientRect();return r?Math.round(r.x)+','+Math.round(r.y)+' '+Math.round(r.width)+'x'+Math.round(r.height):'none'})()`))
+  log('corner clears shell controls: ' + await js(win, `(() => {
+    const btn = document.querySelector('[data-dsh-chat-corner]');
+    if (!btn) return 'no-btn';
+    const r = btn.getBoundingClientRect();
+    const below = Math.round(r.top) >= 50;
+    const sess = [...document.querySelectorAll('button')].find((b) => b.textContent.includes('Session log'));
+    let overlap = 'no-session-log';
+    if (sess) {
+      const s = sess.getBoundingClientRect();
+      overlap = (r.right < s.left || r.left > s.right || r.bottom < s.top || r.top > s.bottom) ? 'clear' : 'OVERLAP';
+    }
+    return (below ? 'top-ok(' + Math.round(r.top) + ')' : 'TOO-HIGH(' + Math.round(r.top) + ')') + '/session-log:' + overlap;
+  })()`))
   log('corner count: ' + await js(win, `document.querySelectorAll('[data-dsh-chat-corner]').length`))
   log('sidebar entry gone: ' + await js(win, `!document.querySelector('[data-dsh-chat-entry]')`))
 

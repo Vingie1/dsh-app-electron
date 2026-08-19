@@ -47,7 +47,9 @@ window.__ModuleLoader__.load({
 				// Transparent at rest so only the blue whale floats on the
 				// window background (no grey ring); a soft fill appears on
 				// hover as feedback. Open/closed is not color-coded.
-				".dshc-corner{position:fixed;top:14px;right:30px;z-index:39;width:28px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;display:grid;place-items:center;padding:0;opacity:1;transition:background .12s ease}",
+				// top:56px keeps it below the shell's own top-right control
+				// row (Session log toggle etc.), which sits at ~10-45px.
+				".dshc-corner{position:fixed;top:56px;right:30px;z-index:39;width:28px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;display:grid;place-items:center;padding:0;opacity:1;transition:background .12s ease}",
 				".dshc-corner:hover{background:var(--dsw-alias-interactive-bg-hover)}",
 				".dshc-corner svg{width:16px;height:16px}",
 				// Full-page plugin panels (dsh-memoir memory page, dsh-ssh,
