@@ -79,6 +79,15 @@ async function run() {
     return (hidden ? 'hidden' : 'VISIBLE-OVER-PANEL') + '/' + (restored ? 'restored' : 'GONE-AFTER-CLOSE');
   })()`))
 
+  // ---- memoir v0.4+ observability strip hidden (bottom of the panel) ----
+  // dsh-memoir may not be installed on every machine — only assert when the
+  // strip element actually exists in the live GUI.
+  log('memoir strip hidden: ' + await js(win, `(() => {
+    const strip = document.querySelector('.memoir-panel .memoir-inspector');
+    if (strip === null) return 'no-memoir (skip)';
+    return getComputedStyle(strip).display === 'none' ? 'hidden' : 'VISIBLE';
+  })()`))
+
   // ---- open via corner button ----
   const boundsBefore = win.getBounds()
   await js(win, `document.querySelector('[data-dsh-chat-corner]').click()`)

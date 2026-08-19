@@ -57,7 +57,13 @@ window.__ModuleLoader__.load({
 				// panel's own controls (e.g. memoir's close button).
 				"html[data-dsh-memoir-active] .dshc-corner,",
 				"html[data-dsh-ssh-active] .dshc-corner,",
-				"html[data-dsh-taskboard-active] .dshc-corner{display:none}"
+				"html[data-dsh-taskboard-active] .dshc-corner{display:none}",
+				// dsh-memoir v0.4+ renders a bottom observability strip in the
+				// panel (Hot Memory preview / Memory Diagnostics) with no
+				// config to disable it — hide it. Scoped under .memoir-panel
+				// (memoir page only) with higher specificity than memoir's
+				// own single-class rules.
+				".memoir-panel .memoir-inspector,.memoir-panel .memoir-diagnostics{display:none}"
 			].join("\n");
 			document.head.appendChild(style);
 		}
