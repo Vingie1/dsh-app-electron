@@ -4,7 +4,7 @@
 //   2) start/reuse the dsh web service (background)
 //   3) open a chrome-less window loading the GUI
 //   4) whale icon on both the title bar and the Windows taskbar
-//   5) close window (X) -> stop dsh service -> quit the whole app
+//   5) close window (X) -> side window closes with it -> stop dsh service -> quit
 //   6) remember window size/position across launches
 //   7) external links open in the default browser, never in the shell
 
@@ -33,6 +33,7 @@ const STATE   = path.join(__dirname, 'window-state.json')
 
 let dshProcess = null
 let mainWindow = null
+let chatSide = null // chat side-window controller (closed with the main window)
 
 function log(msg) {
   const line = `[${new Date().toISOString()}] ${msg}`
@@ -187,7 +188,10 @@ function createWindow() {
   })
 
   mainWindow.on('close', saveWindowState)
-  mainWindow.on('closed', () => { mainWindow = null })
+  mainWindow.on('closed', () => {
+    chatSide.close() // the side window must not outlive the main window
+    mainWindow = null
+  })
 
   mainWindow.loadURL(GUI_URL)
 }
@@ -216,7 +220,7 @@ if (!gotLock) {
     }
     createWindow()
     // Chat side window (dsh-deepseek-chat): frameless dock + shift main left.
-    registerChatWindow({ getMainWindow: () => mainWindow, log })
+    chatSide = registerChatWindow({ getMainWindow: () => mainWindow, log })
   })
 
   app.on('activate', () => {

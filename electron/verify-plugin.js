@@ -48,7 +48,9 @@ async function run() {
   installAttachGate(win.webContents, log)
   // Pin the main window somewhere with room to shift left.
   win.setBounds({ x: 120, y: 40, width: 1440, height: 900 })
-  registerChatWindow({ getMainWindow: () => win, log })
+  // Same wiring as the shipped shell: the side window must die with the main.
+  const chatSide = registerChatWindow({ getMainWindow: () => win, log })
+  win.on('closed', () => { if (chatSide !== null) chatSide.close() })
   win.webContents.on('console-message', (_e, level, message) => {
     if (/error|Error|warn|chat/i.test(message)) log(`console[${level}]: ${message.slice(0, 300)}`)
   })
@@ -195,10 +197,26 @@ async function run() {
   log('guest url before: ' + urlBefore)
   log('guest url after: ' + (guestContents ? guestContents.getURL() : 'no-guest'))
 
+  // ---- closing the main window must close the side window too ----
+  // (open the side window first only if the nav-lock test didn't leave it up)
+  let nBefore = BrowserWindow.getAllWindows().filter((w) => !w.isDestroyed()).length
+  if (nBefore === 1) {
+    await js(win, `document.querySelector('[data-dsh-chat-corner]').click()`)
+    await sleep(3000)
+    nBefore = BrowserWindow.getAllWindows().filter((w) => !w.isDestroyed()).length
+  }
+  win.close()
+  await sleep(2500)
+  const nAfter = BrowserWindow.getAllWindows().filter((w) => !w.isDestroyed()).length
+  log('main-close test: ' + nBefore + ' windows before main close -> ' + nAfter + ' after (expect 0)')
+
   app.exit(0)
 }
 
 app.whenReady().then(() => {
   run().catch((err) => { log('VERIFIER ERROR: ' + (err && err.stack || err)); app.exit(1) })
 })
+// Keep the process alive through the main-close test (the default
+// window-all-closed quit would kill the verifier mid-assertion).
+app.on('window-all-closed', () => {})
 setTimeout(() => { log('HARD TIMEOUT'); app.exit(2) }, 240000)
