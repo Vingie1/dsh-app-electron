@@ -66,7 +66,8 @@ async function startDsh() {
   log('starting dsh web service...')
   let exitedEarly = false
   try {
-    dshProcess = spawn(NODE, [DSH_CLI, 'web', '--port', String(PORT)], {
+    // --no-open: the web command would pop the default browser otherwise.
+    dshProcess = spawn(NODE, [DSH_CLI, 'web', '--port', String(PORT), '--no-open'], {
       cwd: DSH_HOME,
       env: Object.assign({}, process.env, { DSH_HOME }),
       windowsHide: true,
